@@ -16,7 +16,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.http import JsonResponse
+
+
+def health_check(request):
+    """
+    Endpoint simple pour verifier que le backend repond.
+    Utilise par Docker/monitoring, ne verifie pas la DB/Redis pour l'instant
+    (juste que Django est vivant et repond).
+    """
+    return JsonResponse({'status': 'ok'})
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/health/', health_check, name='health-check'),
 ]
